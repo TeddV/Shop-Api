@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using ProductCatalog.Models;
+using Shop.Models;
 
 namespace Shop.Models
 {
