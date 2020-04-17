@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using Shop.Models;
 
-namespace CategoryController.Controllers
+namespace Shop.Controllers
 {
     [Route("Categories")]
     public class CategoryController : ControllerBase
@@ -17,8 +16,11 @@ namespace CategoryController.Controllers
             [FromServices] DataContext context
         )
         {
-            var categories = await context.Categories.AsNoTracking().ToListAsync();
-                return Ok(categories);
+            var categories = await context
+                .Categories
+                .AsNoTracking()
+                .ToListAsync();
+            return Ok(categories);
         }    
 
         [HttpGet]
@@ -28,7 +30,10 @@ namespace CategoryController.Controllers
             [FromServices] DataContext context
         )   
         {
-            var category = await context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var category = await context
+                .Categories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             return category;
         }
@@ -98,7 +103,9 @@ namespace CategoryController.Controllers
             [FromServices]DataContext context
         )
         {
-            var category = await context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+            var category = await context
+                .Categories
+                .FirstOrDefaultAsync(x => x.Id == id);
             if(category == null)
                 return NotFound(new { message = "Categoria não encontrada"});
 
