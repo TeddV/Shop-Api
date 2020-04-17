@@ -11,22 +11,35 @@ namespace Shop.Controllers
     [Route("products")]
     public class ProductController : ControllerBase
     {
-       
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<Product>>> Get([FromServices] DataContext context)
+        public async Task<ActionResult<List<Product>>> Get(
+            [FromServices] DataContext context
+        )
         {
-            var products = await context.Products.Include(x => x.Category).AsNoTracking().ToListAsync();
-            return products;
+            var products = await context
+                .Products
+                .Include(x => x.Category)
+                .AsNoTracking()
+                .ToListAsync();
+            return Ok(products);  
         }
 
         [HttpGet]
-        [Route("{id:int}")]
-        public async Task<ActionResult<Product>> GetById([FromServices] DataContext context, int id)
+        [Route("categories/{id:int}")]
+        public async Task<ActionResult<Product>> GetById(
+            [FromServices] DataContext context,
+            long id
+        )
         {
-            var product = await context.Products.Include(x => x.Category).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-            return product;
-        }
+            var Product = await context
+                .Products
+                .Include(x => x.Category)
+                .AsTracking()
+                .Where(x => x.CategoryId == id)
+                .ToListAsync();
+            return Ok(Product);    
+        }          
 
         [HttpPost]
         [Route("")]
